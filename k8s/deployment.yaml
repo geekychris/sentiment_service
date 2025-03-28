@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: entity-sentiment-api
+  labels:
+    app: entity-sentiment-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: entity-sentiment-api
+  template:
+    metadata:
+      labels:
+        app: entity-sentiment-api
+    spec:
+      containers:
+      - name: entity-sentiment-api
+        image: yourusername/entity-sentiment-api:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        resources:
+          limits:
+            cpu: "1"
+            memory: "2Gi"
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+        env:
+        - name: MODEL_CACHE_DIR
+          value: "/app/models"
+        - name: LOG_LEVEL
+          value: "INFO"
+        - name: MAX_BATCH_SIZE
+          value: "50"
+        volumeMounts:
+        - name: model-cache
+          mountPath: /app/models
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      volumes:
+      - name: model-cache
+        persistentVolumeClaim:
+          claimName: model-cache-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: model-cache-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+

@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  entity-sentiment-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_CACHE_DIR=/app/models
+      - LOG_LEVEL=INFO
+      - MAX_BATCH_SIZE=50
+    volumes:
+      - model-cache:/app/models
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+
+volumes:
+  model-cache:
+
