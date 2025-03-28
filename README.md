@@ -215,7 +215,7 @@ curl -X POST "http://localhost:8000/analyze/batch" \
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the Apache License 2.0. Copyright 2025 Chris Collins <chris@hitorro.com>. See the LICENSE file for details.
 
 ## Technical Stack
 
