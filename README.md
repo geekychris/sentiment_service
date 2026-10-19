@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.png" alt="Sentiment Service logo" width="180">
+</p>
+
 # Entity-Level Sentiment Analysis API
 
 A RESTful service that performs entity-level sentiment analysis on text, identifying specific sentiments associated with entities mentioned in the text.
